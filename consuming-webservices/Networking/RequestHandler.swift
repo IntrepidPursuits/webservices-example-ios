@@ -67,7 +67,7 @@ struct HTTPRequestHandler: RequestHandler {
             }
         }
         
-        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 callback(.Failure(error))
                 return
@@ -97,7 +97,7 @@ struct HTTPRequestHandler: RequestHandler {
             } catch (let e) {
                 callback(.Failure(e))
             }
-        })
+        }
         task.resume()
     }
 }
