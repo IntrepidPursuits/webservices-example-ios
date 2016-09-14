@@ -13,11 +13,6 @@ public enum Result<T> {
     case Failure(Error)
 }
 
-enum SuccessType {
-    case data(NSData)
-    case json(AnyObject)
-}
-
 enum RequestError: Error {
     case requestHandlerNilError
     case invalidURLError
@@ -43,11 +38,11 @@ extension RequestError: CustomStringConvertible {
     }
 }
 
-struct HTTPRequestHandler: RequestHandlable {
+struct HTTPRequestHandler: RequestHandler {
     var path: String
     var method: NetworkMethod
     var headers: [String : String]?
-    var body: AnyObject?
+    var body: Any?
     
     func execute( callback: @escaping (Result<Any>) -> Void) {
         guard let url = URL(string: path) else {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C50F7781D88FC03003BD645 /* LED.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C50F7771D88FC03003BD645 /* LED.swift */; };
 		0CC593A61D887A66001BFB5D /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC593A51D887A66001BFB5D /* ViewModel.swift */; };
 		0CDD65C61D88437800BB0F8E /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDD65C51D88437800BB0F8E /* NetworkRequest.swift */; };
 		0CDD65C81D88438B00BB0F8E /* RequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDD65C71D88438B00BB0F8E /* RequestHandler.swift */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C50F7771D88FC03003BD645 /* LED.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LED.swift; sourceTree = "<group>"; };
 		0CC593A51D887A66001BFB5D /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		0CDD65C51D88437800BB0F8E /* NetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		0CDD65C71D88438B00BB0F8E /* RequestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestHandler.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 		0CDEE76B1D874E1100A0BCCD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0C50F7771D88FC03003BD645 /* LED.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CC593A61D887A66001BFB5D /* ViewModel.swift in Sources */,
+				0C50F7781D88FC03003BD645 /* LED.swift in Sources */,
 				0CDEE74D1D874C9D00A0BCCD /* ViewController.swift in Sources */,
 				0CDD65C61D88437800BB0F8E /* NetworkRequest.swift in Sources */,
 				0CDD65C81D88438B00BB0F8E /* RequestHandler.swift in Sources */,

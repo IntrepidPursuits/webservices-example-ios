@@ -16,25 +16,25 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         viewModel = ViewModel(ledStatusDidSet: updateLEDStatus)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     @IBAction func toggleLEDButtonPressed(_ sender: UIButton) {
-        viewModel?.toggleLED(to: true)
+        let newStatus = viewModel?.ledStatus == .on ? false : true
+        viewModel?.toggleLED(to: newStatus)
     }
 
     @IBAction func getLEDStatusButtonPressed(_ sender: UIButton) {
         viewModel?.refreshLEDStatus()
     }
     
-    func updateLEDStatus() {
-        ledStatusLabel.text = viewModel?.ledStatus
+    func updateLEDStatus(status: LEDState) {
+        switch status {
+        case .on:
+            ledStatusLabel.text = "🔵"
+        case .off:
+            ledStatusLabel.text = "⚪️"
+        }
     }
     
 }

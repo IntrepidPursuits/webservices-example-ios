@@ -20,33 +20,32 @@ protocol NetworkCallable {
     var path: String { get }
     var method: NetworkMethod { get }
     var headers: [String: String]? { get }
-    var body: AnyObject? { get }
+    var body: Any? { get }
     func execute(callback: @escaping (Result<Any>) -> Void)
 }
 
 protocol NetworkRequestable: NetworkCallable {
-    var requestHandler: RequestHandlable? { get }
-    var defaultHTTPHandler: RequestHandlable { get }
+    var requestHandler: RequestHandler? { get }
+    var defaultHTTPHandler: RequestHandler { get }
 }
 
 extension NetworkRequestable {
-    var defaultHTTPHandler: RequestHandlable {
+    var defaultHTTPHandler: RequestHandler {
         return HTTPRequestHandler(path: path, method: method, headers: headers, body: body)
     }
 }
 
-protocol RequestHandlable: NetworkCallable {
-    // func execute(callback: @escaping (Result<AnyObject>) -> Void)
+protocol RequestHandler: NetworkCallable {
 }
 
 struct NetworkRequest: NetworkRequestable {
     var path: String
     var method: NetworkMethod
     var headers: [String : String]?
-    var body: AnyObject?
-    var requestHandler: RequestHandlable?
+    var body: Any?
+    var requestHandler: RequestHandler?
     
-    init (path: String, method: NetworkMethod, headers: [String : String]? = nil, body: AnyObject? = nil, requestHandler: RequestHandlable? = nil) {
+    init (path: String, method: NetworkMethod, headers: [String : String]? = nil, body: Any? = nil, requestHandler: RequestHandler? = nil) {
         self.path = path
         self.method = method
         self.headers = headers
