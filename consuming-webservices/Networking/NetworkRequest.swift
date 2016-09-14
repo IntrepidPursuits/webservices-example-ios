@@ -55,7 +55,7 @@ struct NetworkRequest: NetworkRequestable {
     
     func execute(callback: @escaping (Result<Any>) -> Void) {
         guard let requestHandler = requestHandler else {
-            callback(.Failure(RequestError.requestHandlerNilError))
+            callback(.failure(RequestError.requestHandlerNilError))
             return
         }
         

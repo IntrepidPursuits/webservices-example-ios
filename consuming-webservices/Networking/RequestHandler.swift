@@ -9,8 +9,8 @@
 import Foundation
 
 public enum Result<T> {
-    case Success(T)
-    case Failure(Error)
+    case success(T)
+    case failure(Error)
 }
 
 enum RequestError: Error {
@@ -46,7 +46,7 @@ struct HTTPRequestHandler: RequestHandler {
     
     func execute( callback: @escaping (Result<Any>) -> Void) {
         guard let url = URL(string: path) else {
-            callback(.Failure(RequestError.invalidURLError))
+            callback(.failure(RequestError.invalidURLError))
             return
         }
         
@@ -63,28 +63,28 @@ struct HTTPRequestHandler: RequestHandler {
             do {
                 request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
             } catch (let e) {
-                callback(.Failure(e))
+                callback(.failure(e))
             }
         }
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                callback(.Failure(error))
+                callback(.failure(error))
                 return
             }
             
             guard let response = response as? HTTPURLResponse else {
-                callback(.Failure(RequestError.noResponseError))
+                callback(.failure(RequestError.noResponseError))
                 return
             }
             
             guard response.statusCode < 400 else {
-                callback(.Failure(RequestError.httpResponseError(response.statusCode)))
+                callback(.failure(RequestError.httpResponseError(response.statusCode)))
                 return
             }
             
             guard let data = data else {
-                callback(.Failure(RequestError.noDataError))
+                callback(.failure(RequestError.noDataError))
                 return
             }
             
@@ -93,9 +93,9 @@ struct HTTPRequestHandler: RequestHandler {
                 if let str = String(data: data, encoding: String.Encoding.utf8) {
                     print("Received response: \(str)")
                 }
-                callback(.Success(json))
+                callback(.success(json))
             } catch (let e) {
-                callback(.Failure(e))
+                callback(.failure(e))
             }
         }
         task.resume()

@@ -33,14 +33,14 @@ class ViewModel {
         let body = ["args": "\(on ? "on" : "off")"]
         NetworkRequest(path: toggleURL, method: .post, headers: headers, body: body).execute { result in
             switch result {
-            case .Success(let data):
+            case .success(let data):
                 guard
                     let data = data as? [String: Any],
                     let reportedLEDStatus = data["return_value"] as? Int
                     else { return }
                 self.led.status = reportedLEDStatus == 1 ? .on : .off
                 self.ledStatus = self.led.status
-            case .Failure(let error):
+            case .failure(let error):
                 print(error)
             }
         }
@@ -49,14 +49,14 @@ class ViewModel {
     func refreshLEDStatus() {
         NetworkRequest(path: statusURL, method: .get).execute { result in
             switch result {
-            case .Success(let data):
+            case .success(let data):
                 guard
                     let data = data as? [String: Any],
                     let reportedLEDStatus = data["result"] as? Int
                     else { return }
                 self.led.status = reportedLEDStatus == 1 ? .on : .off
                 self.ledStatus = self.led.status
-            case .Failure(let error):
+            case .failure(let error):
                 print(error)
             }
         }
