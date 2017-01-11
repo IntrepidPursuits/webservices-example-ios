@@ -14,25 +14,25 @@ public enum Result<T> {
 }
 
 enum RequestError: Error {
-    case requestHandlerNilError
-    case invalidURLError
-    case noResponseError
-    case httpResponseError(Int)
-    case noDataError
+    case requestHandlerNil
+    case invalidURL
+    case noResponse
+    case httpResponse(Int)
+    case noData
 }
 
 extension RequestError: CustomStringConvertible {
     var description: String {
         switch self {
-        case .requestHandlerNilError:
+        case .requestHandlerNil:
             return "No Request Handler"
-        case .invalidURLError:
+        case .invalidURL:
             return "Invalid URL"
-        case .noResponseError:
+        case .noResponse:
             return "No Response"
-        case .httpResponseError(let errorCode):
+        case .httpResponse(let errorCode):
             return "HTTP Response: \(errorCode)"
-        case .noDataError:
+        case .noData:
             return "No Data Returned"
         }
     }
@@ -46,7 +46,7 @@ struct HTTPRequestHandler: RequestHandler {
     
     func execute( callback: @escaping (Result<Any>) -> Void) {
         guard let url = URL(string: path) else {
-            callback(.failure(RequestError.invalidURLError))
+            callback(.failure(RequestError.invalidURL))
             return
         }
         
@@ -74,17 +74,17 @@ struct HTTPRequestHandler: RequestHandler {
             }
             
             guard let response = response as? HTTPURLResponse else {
-                callback(.failure(RequestError.noResponseError))
+                callback(.failure(RequestError.noResponse))
                 return
             }
             
             guard response.statusCode < 400 else {
-                callback(.failure(RequestError.httpResponseError(response.statusCode)))
+                callback(.failure(RequestError.httpResponse(response.statusCode)))
                 return
             }
             
             guard let data = data else {
-                callback(.failure(RequestError.noDataError))
+                callback(.failure(RequestError.noData))
                 return
             }
             

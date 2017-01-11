@@ -10,8 +10,13 @@ import Foundation
 
 class ViewModel {
     
-    let toggleURL = "https://api.particle.io/v1/devices/27001c001647343339383037/led/?access_token=1cb212aac21fba67dbe6fea474b896b11cc2af59"
-    let statusURL = "https://api.particle.io/v1/devices/27001c001647343339383037/ledStatus/?access_token=1cb212aac21fba67dbe6fea474b896b11cc2af59"
+    let deviceId = "220025001651353530333533"
+    var toggleURL: String {
+        return "https://api.particle.io/v1/devices/\(deviceId)/led/?access_token=1cb212aac21fba67dbe6fea474b896b11cc2af59"
+    }
+    var statusURL: String {
+        return "https://api.particle.io/v1/devices/\(deviceId)/ledStatus/?access_token=1cb212aac21fba67dbe6fea474b896b11cc2af59"
+    }
     
     private var led = LED()
     
