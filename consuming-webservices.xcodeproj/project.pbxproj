@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0C50F7781D88FC03003BD645 /* LED.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C50F7771D88FC03003BD645 /* LED.swift */; };
+		0C515FF61EE7B92E005654F4 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C515FF51EE7B92E005654F4 /* UIColorExtension.swift */; };
+		0C515FF81EE7C0C2005654F4 /* HSBColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C515FF71EE7C0C2005654F4 /* HSBColorPicker.swift */; };
 		0CC593A61D887A66001BFB5D /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC593A51D887A66001BFB5D /* ViewModel.swift */; };
 		0CDD65C61D88437800BB0F8E /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDD65C51D88437800BB0F8E /* NetworkRequest.swift */; };
 		0CDD65C81D88438B00BB0F8E /* RequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDD65C71D88438B00BB0F8E /* RequestHandler.swift */; };
@@ -31,6 +33,8 @@
 
 /* Begin PBXFileReference section */
 		0C50F7771D88FC03003BD645 /* LED.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LED.swift; sourceTree = "<group>"; };
+		0C515FF51EE7B92E005654F4 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		0C515FF71EE7C0C2005654F4 /* HSBColorPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HSBColorPicker.swift; path = "consuming-webservices/HSBColorPicker.swift"; sourceTree = SOURCE_ROOT; };
 		0CC593A51D887A66001BFB5D /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		0CDD65C51D88437800BB0F8E /* NetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		0CDD65C71D88438B00BB0F8E /* RequestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestHandler.swift; sourceTree = "<group>"; };
@@ -88,6 +92,8 @@
 				0CDEE76B1D874E1100A0BCCD /* Models */,
 				0CDEE76A1D874E0D00A0BCCD /* Networking */,
 				0CDEE74A1D874C9D00A0BCCD /* AppDelegate.swift */,
+				0C515FF71EE7C0C2005654F4 /* HSBColorPicker.swift */,
+				0C515FF51EE7B92E005654F4 /* UIColorExtension.swift */,
 				0CDEE74C1D874C9D00A0BCCD /* ViewController.swift */,
 				0CC593A51D887A66001BFB5D /* ViewModel.swift */,
 				0CDEE74E1D874C9D00A0BCCD /* Main.storyboard */,
@@ -228,6 +234,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CC593A61D887A66001BFB5D /* ViewModel.swift in Sources */,
+				0C515FF81EE7C0C2005654F4 /* HSBColorPicker.swift in Sources */,
+				0C515FF61EE7B92E005654F4 /* UIColorExtension.swift in Sources */,
 				0C50F7781D88FC03003BD645 /* LED.swift in Sources */,
 				0CDEE74D1D874C9D00A0BCCD /* ViewController.swift in Sources */,
 				0CDD65C61D88437800BB0F8E /* NetworkRequest.swift in Sources */,

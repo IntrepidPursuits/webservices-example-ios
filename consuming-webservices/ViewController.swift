@@ -8,34 +8,29 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, HSBColorPickerDelegate {
     
-    @IBOutlet weak var ledStatusLabel: UILabel!
+    @IBOutlet weak var colorView: UIView!
+    @IBOutlet weak var colorPicker: HSBColorPicker!
     
     var viewModel: ViewModel? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = ViewModel(ledStatusDidSet: updateLEDStatus)
+        colorPicker.delegate = self
+        viewModel = ViewModel(colorDidSet: updateColorView)
     }
 
-    @IBAction func toggleLEDButtonPressed(_ sender: UIButton) {
-        let newStatus = viewModel?.ledStatus == .on ? false : true
-        viewModel?.toggleLED(to: newStatus)
-    }
-
-    @IBAction func getLEDStatusButtonPressed(_ sender: UIButton) {
-        viewModel?.refreshLEDStatus()
+    @IBAction func refreshColorPressed(_ sender: UIButton) {
+        viewModel?.getColor()
     }
     
-    func updateLEDStatus(status: LEDState) {
-        switch status {
-        case .on:
-            ledStatusLabel.text = "🔵"
-        case .off:
-            ledStatusLabel.text = "⚪️"
-        }
+    func updateColorView(to color: UIColor) {
+        colorView.backgroundColor = color
     }
     
+    func HSBColorColorPickerTouched(sender: HSBColorPicker, color: UIColor, point: CGPoint, state: UIGestureRecognizerState) {
+        viewModel?.setColor(color)
+    }
 }
 

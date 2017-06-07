@@ -6,16 +6,23 @@
 //  Copyright © 2016 Intrepid Pursuits. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class ViewModel {
     
-    let deviceId = "220025001651353530333533"
-    var toggleURL: String {
-        return "https://api.particle.io/v1/devices/\(deviceId)/led/?access_token=1cb212aac21fba67dbe6fea474b896b11cc2af59"
+    let name = "wingchi"
+    
+    var colorUrl: String {
+        return "https://apprentice-webservices-demo.firebaseio.com/apprenti/\(name).json"
     }
-    var statusURL: String {
-        return "https://api.particle.io/v1/devices/\(deviceId)/ledStatus/?access_token=1cb212aac21fba67dbe6fea474b896b11cc2af59"
+    
+    var colorDidSet: ((UIColor)->Void)? = nil
+    var color: UIColor = UIColor("#FF0000") {
+        didSet {
+            DispatchQueue.main.async {
+                self.colorDidSet?(self.color)
+            }
+        }
     }
     
     private var led = LED()
@@ -29,38 +36,45 @@ class ViewModel {
         }
     }
     
-    init(ledStatusDidSet: ((LEDState)->Void)?) {
-        self.ledStatusDidSet = ledStatusDidSet
+    init(colorDidSet: ((UIColor)->Void)?) {
+        self.colorDidSet = colorDidSet
     }
     
-    func toggleLED(to on: Bool) {
-        let headers = ["Content-Type": "application/json"]
-        let body = ["args": "\(on ? "on" : "off")"]
-        NetworkRequest(path: toggleURL, method: .post, headers: headers, body: body).execute { result in
+    func getColor() {
+        NetworkRequest(path: colorUrl, method: .get).execute { result in
             switch result {
             case .success(let data):
                 guard
                     let data = data as? [String: Any],
-                    let reportedLEDStatus = data["return_value"] as? Int
+                    let color = data["color"] as? String
                     else { return }
-                self.led.status = reportedLEDStatus == 1 ? .on : .off
-                self.ledStatus = self.led.status
+                let currentColor = UIColor(color)
+                self.color = currentColor
             case .failure(let error):
                 print(error)
             }
         }
     }
     
-    func refreshLEDStatus() {
-        NetworkRequest(path: statusURL, method: .get).execute { result in
+    func setColor(_ color: UIColor) {
+        let colorRgbaString = color.hexString()
+        let index = colorRgbaString.index(colorRgbaString.startIndex, offsetBy: 7)
+        let colorString = colorRgbaString.substring(to: index)
+        
+        let nameString = name.capitalized
+        let headers = ["Content-Type": "application/json"]
+        let body = [
+                "color": "\(colorString)",
+                "name": "\(nameString)"
+            ]
+        NetworkRequest(path: colorUrl, method: .put, headers: headers, body: body).execute { result in
             switch result {
             case .success(let data):
                 guard
                     let data = data as? [String: Any],
-                    let reportedLEDStatus = data["result"] as? Int
+                    let color = data["color"] as? String
                     else { return }
-                self.led.status = reportedLEDStatus == 1 ? .on : .off
-                self.ledStatus = self.led.status
+                self.color = UIColor(color)
             case .failure(let error):
                 print(error)
             }
