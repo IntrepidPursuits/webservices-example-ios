@@ -25,17 +25,6 @@ class ViewModel {
         }
     }
     
-    private var led = LED()
-    
-    var ledStatusDidSet: ((LEDState)->Void)? = nil
-    var ledStatus: LEDState = .off {
-        didSet {
-            DispatchQueue.main.async {
-                self.ledStatusDidSet?(self.ledStatus)
-            }
-        }
-    }
-    
     init(colorDidSet: ((UIColor)->Void)?) {
         self.colorDidSet = colorDidSet
     }
