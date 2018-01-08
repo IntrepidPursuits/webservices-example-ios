@@ -25,17 +25,6 @@ class ViewModel {
         }
     }
     
-    private var led = LED()
-    
-    var ledStatusDidSet: ((LEDState)->Void)? = nil
-    var ledStatus: LEDState = .off {
-        didSet {
-            DispatchQueue.main.async {
-                self.ledStatusDidSet?(self.ledStatus)
-            }
-        }
-    }
-    
     init(colorDidSet: ((UIColor)->Void)?) {
         self.colorDidSet = colorDidSet
     }
@@ -59,8 +48,8 @@ class ViewModel {
     func setColor(_ color: UIColor) {
         let colorRgbaString = color.hexString()
         let index = colorRgbaString.index(colorRgbaString.startIndex, offsetBy: 7)
-        let colorString = colorRgbaString.substring(to: index)
-        
+        let colorString = colorRgbaString[..<index]
+
         let nameString = name.capitalized
         let headers = ["Content-Type": "application/json"]
         let body = [
