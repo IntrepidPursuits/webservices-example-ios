@@ -33,14 +33,19 @@ class ViewModel {
         NetworkRequest(path: colorUrl, method: .get).execute { result in
             switch result {
             case .success(let data):
-                guard
-                    let data = data as? [String: Any],
-                    let color = data["color"] as? String
-                    else { return }
-                let currentColor = UIColor(color)
-                self.color = currentColor
+                guard let jsonData = data as? Data else {
+                    return
+                }
+                do {
+                    let colorData = try JSONDecoder().decode(ColorData.self, from: jsonData)
+                    let currentColor = UIColor(colorData.color)
+                    self.color = currentColor
+                }
+                catch (let error) {
+                    print("JSONDecoder error: ", error)
+                }
             case .failure(let error):
-                print(error)
+                print("NetworkRequest error: ", error)
             }
         }
     }
@@ -59,13 +64,18 @@ class ViewModel {
         NetworkRequest(path: colorUrl, method: .put, headers: headers, body: body).execute { result in
             switch result {
             case .success(let data):
-                guard
-                    let data = data as? [String: Any],
-                    let color = data["color"] as? String
-                    else { return }
-                self.color = UIColor(color)
+                guard let jsonData = data as? Data else {
+                    return
+                }
+                do {
+                    let colorData = try JSONDecoder().decode(ColorData.self, from: jsonData)
+                    self.color = UIColor(colorData.color)
+                }
+                catch (let error) {
+                    print("JSONDecoder error: ", error)
+                }
             case .failure(let error):
-                print(error)
+                print("NetworkRequest error: ", error)
             }
         }
     }
