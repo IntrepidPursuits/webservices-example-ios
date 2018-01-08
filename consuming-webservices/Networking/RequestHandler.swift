@@ -61,7 +61,7 @@ struct HTTPRequestHandler: RequestHandler {
         
         if let body = body {
             do {
-                request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+                request.httpBody = try JSONEncoder().encode(body as? ColorData)
             } catch (let e) {
                 callback(.failure(e))
             }
@@ -88,7 +88,7 @@ struct HTTPRequestHandler: RequestHandler {
                 return
             }
 
-            if let str = String(data: data, encoding: String.Encoding.utf8) {
+            if let str = String(data: data, encoding: .utf8) {
                 print("Received response: \(str)")
             }
             callback(.success(data))

@@ -57,10 +57,8 @@ class ViewModel {
 
         let nameString = name.capitalized
         let headers = ["Content-Type": "application/json"]
-        let body = [
-                "color": "\(colorString)",
-                "name": "\(nameString)"
-            ]
+        let body: ColorData = ColorData(color: colorString, name: nameString)
+
         NetworkRequest(path: colorUrl, method: .put, headers: headers, body: body).execute { result in
             switch result {
             case .success(let data):
@@ -69,7 +67,8 @@ class ViewModel {
                 }
                 do {
                     let colorData = try JSONDecoder().decode(ColorData.self, from: jsonData)
-                    self.color = UIColor(colorData.color)
+                    let newColor = UIColor(colorData.color)
+                    self.color = newColor
                 }
                 catch (let error) {
                     print("JSONDecoder error: ", error)
