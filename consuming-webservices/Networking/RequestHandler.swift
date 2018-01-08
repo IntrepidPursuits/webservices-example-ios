@@ -44,7 +44,7 @@ struct HTTPRequestHandler: RequestHandler {
     var headers: [String : String]?
     var body: Any?
     
-    func execute( callback: @escaping (Result<Any>) -> Void) {
+    func execute(callback: @escaping (Result<Any>) -> Void) {
         guard let url = URL(string: path) else {
             callback(.failure(RequestError.invalidURL))
             return
@@ -87,16 +87,11 @@ struct HTTPRequestHandler: RequestHandler {
                 callback(.failure(RequestError.noData))
                 return
             }
-            
-            do {
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                if let str = String(data: data, encoding: String.Encoding.utf8) {
-                    print("Received response: \(str)")
-                }
-                callback(.success(json))
-            } catch (let e) {
-                callback(.failure(e))
+
+            if let str = String(data: data, encoding: String.Encoding.utf8) {
+                print("Received response: \(str)")
             }
+            callback(.success(data))
         }
         task.resume()
     }
