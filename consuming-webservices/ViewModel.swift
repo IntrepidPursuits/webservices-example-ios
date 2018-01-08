@@ -53,7 +53,7 @@ class ViewModel {
     func setColor(_ color: UIColor) {
         let colorRgbaString = color.hexString()
         let index = colorRgbaString.index(colorRgbaString.startIndex, offsetBy: 7)
-        let colorString = colorRgbaString[..<index]
+        let colorString = String(colorRgbaString[..<index])
 
         let nameString = name.capitalized
         let headers = ["Content-Type": "application/json"]
