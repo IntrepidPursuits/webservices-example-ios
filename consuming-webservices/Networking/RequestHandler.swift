@@ -19,6 +19,7 @@ enum RequestError: Error {
     case noResponse
     case httpResponse(Int)
     case noData
+    case decoderFailure
 }
 
 extension RequestError: CustomStringConvertible {
@@ -34,6 +35,8 @@ extension RequestError: CustomStringConvertible {
             return "HTTP Response: \(errorCode)"
         case .noData:
             return "No Data Returned"
+        case .decoderFailure:
+            return "JSONDecoder failed to generate model"
         }
     }
 }
@@ -91,7 +94,14 @@ struct HTTPRequestHandler: RequestHandler {
             if let str = String(data: data, encoding: .utf8) {
                 print("Received response: \(str)")
             }
-            callback(.success(data))
+
+            do {
+                let colorData = try JSONDecoder().decode(ColorData.self, from: data)
+                callback(.success(colorData))
+            }
+            catch {
+                callback(.failure(RequestError.decoderFailure))
+            }
         }
         task.resume()
     }

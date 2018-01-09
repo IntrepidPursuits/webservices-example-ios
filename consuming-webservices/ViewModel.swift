@@ -33,17 +33,12 @@ class ViewModel {
         NetworkRequest(path: colorUrl, method: .get).execute { result in
             switch result {
             case .success(let data):
-                guard let jsonData = data as? Data else {
+                guard let colorData = data as? ColorData else {
+                    print("Data format incorrect")
                     return
                 }
-                do {
-                    let colorData = try JSONDecoder().decode(ColorData.self, from: jsonData)
-                    let currentColor = UIColor(colorData.color)
-                    self.color = currentColor
-                }
-                catch (let error) {
-                    print("JSONDecoder error: ", error)
-                }
+                let currentColor = UIColor(colorData.color)
+                self.color = currentColor
             case .failure(let error):
                 print("NetworkRequest error: ", error)
             }
@@ -62,17 +57,12 @@ class ViewModel {
         NetworkRequest(path: colorUrl, method: .put, headers: headers, body: body).execute { result in
             switch result {
             case .success(let data):
-                guard let jsonData = data as? Data else {
+                guard let colorData = data as? ColorData else {
+                    print("Data format incorrect")
                     return
                 }
-                do {
-                    let colorData = try JSONDecoder().decode(ColorData.self, from: jsonData)
-                    let newColor = UIColor(colorData.color)
-                    self.color = newColor
-                }
-                catch (let error) {
-                    print("JSONDecoder error: ", error)
-                }
+                let newColor = UIColor(colorData.color)
+                self.color = newColor
             case .failure(let error):
                 print("NetworkRequest error: ", error)
             }
