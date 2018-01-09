@@ -52,57 +52,32 @@ struct HTTPRequestHandler: RequestHandler {
             callback(.failure(RequestError.invalidURL))
             return
         }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = method.rawValue
-        
+
+        // Create your URLRequest and set its method
+
         if let headers = headers {
             for (key, value) in headers {
-                request.addValue(value, forHTTPHeaderField: key)
+                // Add each header value to the appropriate header key
             }
         }
         
         if let body = body {
-            do {
-                request.httpBody = try JSONEncoder().encode(body as? ColorData)
-            } catch (let e) {
-                callback(.failure(e))
-            }
+            // Set the httpBody of your request
+            // Use the JSONEncoder to make the body a ColorData object
         }
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                callback(.failure(error))
-                return
-            }
-            
-            guard let response = response as? HTTPURLResponse else {
-                callback(.failure(RequestError.noResponse))
-                return
-            }
-            
-            guard response.statusCode < 400 else {
-                callback(.failure(RequestError.httpResponse(response.statusCode)))
-                return
-            }
-            
-            guard let data = data else {
-                callback(.failure(RequestError.noData))
-                return
-            }
 
-            if let str = String(data: data, encoding: .utf8) {
-                print("Received response: \(str)")
-            }
+        // Create a dataTask using URLSession with your shiny, new request
+        // We'll need to cast our response as an HTTPURLResponse
+        // We'll also need to decode our received data using JSONDecoder
 
-            do {
-                let colorData = try JSONDecoder().decode(ColorData.self, from: data)
-                callback(.success(colorData))
-            }
-            catch {
-                callback(.failure(RequestError.decoderFailure))
-            }
-        }
-        task.resume()
+        // You might find this snippet handy for debugging
+        // if let str = String(data: data, encoding: .utf8) {
+        //     print("Received response: \(str)")
+        // }
+
+        let fakeData = ["color": "#FF0000", "name": "Cookie Cat"]
+        callback(.success(fakeData))
+
+        // task.resume()
     }
 }
