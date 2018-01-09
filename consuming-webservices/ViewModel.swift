@@ -33,14 +33,14 @@ class ViewModel {
         NetworkRequest(path: colorUrl, method: .get).execute { result in
             switch result {
             case .success(let data):
-                guard
-                    let data = data as? [String: Any],
-                    let color = data["color"] as? String
-                    else { return }
-                let currentColor = UIColor(color)
+                guard let colorData = data as? ColorData else {
+                    print("Data format incorrect")
+                    return
+                }
+                let currentColor = UIColor(colorData.color)
                 self.color = currentColor
             case .failure(let error):
-                print(error)
+                print("NetworkRequest error: ", error)
             }
         }
     }
@@ -48,24 +48,23 @@ class ViewModel {
     func setColor(_ color: UIColor) {
         let colorRgbaString = color.hexString()
         let index = colorRgbaString.index(colorRgbaString.startIndex, offsetBy: 7)
-        let colorString = colorRgbaString[..<index]
+        let colorString = String(colorRgbaString[..<index])
 
         let nameString = name.capitalized
         let headers = ["Content-Type": "application/json"]
-        let body = [
-                "color": "\(colorString)",
-                "name": "\(nameString)"
-            ]
+        let body: ColorData = ColorData(color: colorString, name: nameString)
+
         NetworkRequest(path: colorUrl, method: .put, headers: headers, body: body).execute { result in
             switch result {
             case .success(let data):
-                guard
-                    let data = data as? [String: Any],
-                    let color = data["color"] as? String
-                    else { return }
-                self.color = UIColor(color)
+                guard let colorData = data as? ColorData else {
+                    print("Data format incorrect")
+                    return
+                }
+                let newColor = UIColor(colorData.color)
+                self.color = newColor
             case .failure(let error):
-                print(error)
+                print("NetworkRequest error: ", error)
             }
         }
     }

@@ -19,6 +19,7 @@ enum RequestError: Error {
     case noResponse
     case httpResponse(Int)
     case noData
+    case decoderFailure
 }
 
 extension RequestError: CustomStringConvertible {
@@ -34,6 +35,8 @@ extension RequestError: CustomStringConvertible {
             return "HTTP Response: \(errorCode)"
         case .noData:
             return "No Data Returned"
+        case .decoderFailure:
+            return "JSONDecoder failed to generate model"
         }
     }
 }
@@ -44,7 +47,7 @@ struct HTTPRequestHandler: RequestHandler {
     var headers: [String : String]?
     var body: Any?
     
-    func execute( callback: @escaping (Result<Any>) -> Void) {
+    func execute(callback: @escaping (Result<Any>) -> Void) {
         guard let url = URL(string: path) else {
             callback(.failure(RequestError.invalidURL))
             return
@@ -61,7 +64,7 @@ struct HTTPRequestHandler: RequestHandler {
         
         if let body = body {
             do {
-                request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
+                request.httpBody = try JSONEncoder().encode(body as? ColorData)
             } catch (let e) {
                 callback(.failure(e))
             }
@@ -87,15 +90,17 @@ struct HTTPRequestHandler: RequestHandler {
                 callback(.failure(RequestError.noData))
                 return
             }
-            
+
+            if let str = String(data: data, encoding: .utf8) {
+                print("Received response: \(str)")
+            }
+
             do {
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                if let str = String(data: data, encoding: String.Encoding.utf8) {
-                    print("Received response: \(str)")
-                }
-                callback(.success(json))
-            } catch (let e) {
-                callback(.failure(e))
+                let colorData = try JSONDecoder().decode(ColorData.self, from: data)
+                callback(.success(colorData))
+            }
+            catch {
+                callback(.failure(RequestError.decoderFailure))
             }
         }
         task.resume()
