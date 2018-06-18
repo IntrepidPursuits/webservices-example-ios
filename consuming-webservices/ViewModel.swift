@@ -10,13 +10,13 @@ import UIKit
 
 class ViewModel {
     
-    let name = "wingchi"
+    let searchName = "alex"
     
     var colorUrl: String {
-        return "https://apprentice-webservices-demo.firebaseio.com/apprenti/\(name).json"
+        return "https://apprentice-webservices-demo.firebaseio.com/apprenti/\(searchName).json"
     }
     
-    var colorDidSet: ((UIColor)->Void)? = nil
+    var colorDidSet: ((UIColor) -> Void)? = nil
     var color: UIColor = UIColor("#FF0000") {
         didSet {
             DispatchQueue.main.async {
@@ -24,9 +24,19 @@ class ViewModel {
             }
         }
     }
+
+    var nameDidSet: ((String) -> Void)? = nil
+    var name: String = "Alex" {
+        didSet {
+            DispatchQueue.main.async {
+                self.nameDidSet?(self.name)
+            }
+        }
+    }
     
-    init(colorDidSet: ((UIColor)->Void)?) {
+    init(colorDidSet: ((UIColor) -> Void)?, nameDidSet: ((String) -> Void)?) {
         self.colorDidSet = colorDidSet
+        self.nameDidSet = nameDidSet
     }
     
     func getColor() {
@@ -38,7 +48,9 @@ class ViewModel {
                     return
                 }
                 let currentColor = UIColor(colorData.color)
+                let currentName = colorData.name
                 self.color = currentColor
+                self.name = currentName
             case .failure(let error):
                 print("NetworkRequest error: ", error)
             }
@@ -62,7 +74,9 @@ class ViewModel {
                     return
                 }
                 let newColor = UIColor(colorData.color)
+                let newName = colorData.name
                 self.color = newColor
+                self.name = newName
             case .failure(let error):
                 print("NetworkRequest error: ", error)
             }

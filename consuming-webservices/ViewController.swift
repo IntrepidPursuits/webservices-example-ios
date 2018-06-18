@@ -12,13 +12,14 @@ class ViewController: UIViewController, HSBColorPickerDelegate {
     
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var colorPicker: HSBColorPicker!
+    @IBOutlet weak var nameLabel: UILabel!
     
     var viewModel: ViewModel? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         colorPicker.delegate = self
-        viewModel = ViewModel(colorDidSet: updateColorView)
+        viewModel = ViewModel(colorDidSet: updateColorView, nameDidSet: updateNameLabel)
     }
 
     @IBAction func refreshColorPressed(_ sender: UIButton) {
@@ -27,6 +28,10 @@ class ViewController: UIViewController, HSBColorPickerDelegate {
     
     func updateColorView(to color: UIColor) {
         colorView.backgroundColor = color
+    }
+
+    func updateNameLabel(to name: String) {
+        nameLabel.text = name
     }
     
     func HSBColorColorPickerTouched(sender: HSBColorPicker, color: UIColor, point: CGPoint, state: UIGestureRecognizerState) {
